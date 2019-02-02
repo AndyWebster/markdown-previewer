@@ -8,6 +8,17 @@ renderer.link = function(href, title, text) {
   return `<a target="_blank" href="${href}">${text}` + "</a>";
 };
 
+const MarkdownPreview = props => {
+  return (
+    <div
+      style={{ maxWidth: "900px" }}
+      className="card p-3 mx-auto"
+      id="preview"
+      dangerouslySetInnerHTML={{ __html: marked(props.input, { renderer: renderer, breaks: true }) }}
+    />
+  );
+};
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,12 +33,25 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <textarea value={this.state.input} name="editor" id="editor" cols="30" rows="10" onChange={this.handleChange} />
-        <div
-          id="preview"
-          dangerouslySetInnerHTML={{ __html: marked(this.state.input, { renderer: renderer, breaks: true }) }}
-        />
+      <div className="App container-fluid bg-secondary w-100 m-0 p-3">
+        <div className="card p-3 mb-3 mx-auto" style={{ maxWidth: "900px" }}>
+          <span className="card-title text-secondary m-0 px-3">
+            <p className="h3">Markdown</p>
+            <hr />
+          </span>
+
+          <div className="card-body p-0">
+            <textarea
+              className="form-control  bg-light"
+              value={this.state.input}
+              name="editor"
+              id="editor"
+              rows="10"
+              onChange={this.handleChange}
+            />
+          </div>
+        </div>
+        <MarkdownPreview input={this.state.input} />
       </div>
     );
   }
